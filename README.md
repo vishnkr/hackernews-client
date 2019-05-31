@@ -1,1 +1,2 @@
-A Hackernews clone built using Javascript and React (Work in Progress)
+##Hackernews Clone
+A Hackernews clone built using Javascript and React that fetched data from Hackernews API.(Work in Progress)
