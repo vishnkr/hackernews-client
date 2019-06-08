@@ -48,7 +48,7 @@ class Button extends Component{    //ES6 Class component
 }
 
 const Table = ({ list, onDismiss }) =>
-  <div className="table">
+  <div className="table">    
     {list.map(item =>
       <div key={item.objectID} className="table-row">
         <span style={{width:'40%'}}>
@@ -183,3 +183,7 @@ onSearchSubmit(event){
 
 export default App;
   
+
+export{
+  Button, Search, Table,
+};
