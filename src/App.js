@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+//import PropTypes from 'prop-types';
 import './App.css';
 
 
@@ -16,23 +17,42 @@ const PARAM_PAGE = 'page=';
 const PARAM_HPP = 'hitsPerPage=';
 
 
-function isSearched(searchTerm){
-  return function(item){
-    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+class Search extends Component {
+  componentDidMount(){
+    if(this.input){
+      this.input.focus();
+    }
   }
+  render() {
+    const {
+      value,
+      onChange,
+      onSubmit,
+      children
+    } = this.props;
+return (
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          value={value}
+          onChange={onChange}
+          ref = {(node)=>{this.input = node;}}
+        />
+        <button type="submit">
+        {children}
+        </button>
+</form>
+); }
 }
 
-const Search = ({value, onChange, onSubmit, children})=> //functional stateless components changed from an ES6 class component
-
-    <form onSubmit={onSubmit}>
-          <input 
-          type="text" 
-          value = {value} 
-          onChange = {onChange} />
-    <button type="submit">
-      {children}
-    </button>
-    </form>
+class Loading extends Component{
+  render(){
+    return (
+      
+      <i class="fas fa-spinner"><h3>Loading...</h3></i>
+    );
+  }
+}
 
 class Button extends Component{    //ES6 Class component
   render(){
@@ -41,8 +61,7 @@ class Button extends Component{    //ES6 Class component
       <button onClick = {onClick} className={className} type="button">
         {children}
       </button>
-
-    )
+    );
 
   }
 }
@@ -68,6 +87,12 @@ const Table = ({ list, onDismiss }) =>
 </div>
 
 
+const withLoading = (Component) => ({ isLoading, ...rest }) =>
+  isLoading
+    ? <Loading />
+    : <Component { ...rest } />
+const ButtonWithLoading = withLoading(Button);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -76,6 +101,7 @@ class App extends Component {
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
       error: null,
+      isLoading : false,
 };
   this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this)
   this.setSearchTopStories = this.setSearchTopStories.bind(this);
@@ -101,16 +127,19 @@ setSearchTopStories(result){
     this.setState({
       results: {
         ...results,
-        [searchKey]: { hits: updatedHits, page }
+        [searchKey]: { hits: updatedHits, page },
+        isLoading: false
 }
 });
 
 }
 
 fetchSearchTopStories(searchTerm, page=0) {
+  this.setState({ isLoading: true });
   axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${
   PARAM_HPP}${DEFAULT_HPP}`).then(result => this.setSearchTopStories(result.data))
     .catch(error => this.setState({error}));
+  
 }
 
 
@@ -143,7 +172,7 @@ onSearchSubmit(event){
   }); }
 
     render() {
-      const { searchTerm, results, searchKey, error } = this.state;
+      const { searchTerm, results, searchKey, error, isLoading } = this.state;
       const page = (results && results[searchKey] &&
         results[searchKey].page)||0;
       const list = (
@@ -172,10 +201,14 @@ onSearchSubmit(event){
           list={list}
           onDismiss={this.onDismiss}
       /> }
-        <div className="interactions">
-          <Button onClick={()=> this.fetchSearchTopStories(searchKey, page+1)}>
+        
+        <div classname="interactions">
+          <ButtonWithLoading 
+          isLoading={isLoading}
+          onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
             More
-          </Button>
+          </ButtonWithLoading>
+
         </div>
           
         </div> );
