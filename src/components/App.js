@@ -1,10 +1,8 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
-//import PropTypes from 'prop-types';
-import './App.css';
-
-
+import '../App.css';
+import Header from './Header'
 
 
 const DEFAULT_QUERY = '';
@@ -49,7 +47,7 @@ class Loading extends Component{
   render(){
     return (
       
-      <i class="fas fa-spinner"><h3>Loading...</h3></i>
+      <p>Loading..</p>
     );
   }
 }
@@ -185,8 +183,10 @@ onSearchSubmit(event){
       }
 
       return (
+        
         <div className="page">
           <div className="interactions">
+          <Header />
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
@@ -194,7 +194,7 @@ onSearchSubmit(event){
               Search 
             </Search>
           </div>
-          { error ? <div class = "interactions">
+          { error ? <div className = "interactions">
             <p>Something went wrong!!!!</p>}
             </div> : 
           <Table 
@@ -202,7 +202,7 @@ onSearchSubmit(event){
           onDismiss={this.onDismiss}
       /> }
         
-        <div classname="interactions">
+        <div className="interactions">
           <ButtonWithLoading 
           isLoading={isLoading}
           onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>

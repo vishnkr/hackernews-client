@@ -35,6 +35,7 @@ exports[`App has a valid snapshot 1`] = `
     >
       More
     </button>
+    
   </div>
 </div>
 `;
