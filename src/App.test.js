@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
-import App, {Search, Table, Button} from './App';
 
+import App, { Button} from './components/App';
+import Search from './components/Search';
+import Table from './components/Table';
 
 
 

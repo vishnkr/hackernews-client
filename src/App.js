@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
-//import PropTypes from 'prop-types';
-import './App.css';
-
-
+import '../App.css';
+import Header from './Header'
+import Search from './Search'
+import Table from './Table'
 
 
 const DEFAULT_QUERY = '';
@@ -17,42 +17,7 @@ const PARAM_PAGE = 'page=';
 const PARAM_HPP = 'hitsPerPage=';
 
 
-class Search extends Component {
-  componentDidMount(){
-    if(this.input){
-      this.input.focus();
-    }
-  }
-  render() {
-    const {
-      value,
-      onChange,
-      onSubmit,
-      children
-    } = this.props;
-return (
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          value={value}
-          onChange={onChange}
-          ref = {(node)=>{this.input = node;}}
-        />
-        <button type="submit">
-        {children}
-        </button>
-</form>
-); }
-}
-
-class Loading extends Component{
-  render(){
-    return (
-      
-      <i class="fas fa-spinner"><h3>Loading...</h3></i>
-    );
-  }
-}
+x
 
 class Button extends Component{    //ES6 Class component
   render(){
@@ -66,30 +31,10 @@ class Button extends Component{    //ES6 Class component
   }
 }
 
-const Table = ({ list, onDismiss }) =>
-  <div className="table">    
-    {list.map(item =>
-      <div key={item.objectID} className="table-row">
-        <span style={{width:'40%'}}>
-          <a href={item.url}>{item.title}</a>
-        </span>
-        <span style={{width:'30%'}}>{item.author}</span>
-        <span style={{width:'10%'}}>{item.num_comments}</span>
-        <span style={{width:'10%'}}>{item.points}</span>
-        <span style={{width:'10%'}}>
-        <Button
-      onClick={() => onDismiss(item.objectID)} className="button-inline">
-         Dismiss
-        </Button>
-        </span>
-</div>
-)}
-</div>
-
 
 const withLoading = (Component) => ({ isLoading, ...rest }) =>
   isLoading
-    ? <Loading />
+    ? <div>Loading... </div>
     : <Component { ...rest } />
 const ButtonWithLoading = withLoading(Button);
 
@@ -218,5 +163,5 @@ export default App;
   
 
 export{
-  Button, Search, Table,
+  Button
 };
